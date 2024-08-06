@@ -1,5 +1,7 @@
-# delete.md
+### delete.md
 
+```md
+# Delete the created Book instance
 ## Command:
 ```python
 book = Book.objects.get(title="Nineteen Eighty-Four")
