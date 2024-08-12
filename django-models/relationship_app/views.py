@@ -1,3 +1,4 @@
+from django.views.generic.detail import DetailView
 from django.shortcuts import render, get_object_or_404
 from .models import Library
 
@@ -18,7 +19,13 @@ class LibraryDetailView(DetailView):
     context_object_name = 'library'
 
 
-   
+   from .models import Library
+
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'relationship_app/library_detail.html'
+    context_object_name = 'library'
+
 
 from django.shortcuts import render
 from .models import Book
