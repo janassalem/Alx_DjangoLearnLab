@@ -39,3 +39,16 @@ class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
+
+from django.views.generic import ListView, DetailView
+from .models import Book, Library
+
+class ListBooksView(ListView):
+    model = Book
+    template_name = 'relationship_app/list_books.html'
+    context_object_name = 'books'
+
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'relationship_app/library_detail.html'
+    context_object_name = 'library'
