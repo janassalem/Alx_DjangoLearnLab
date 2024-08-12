@@ -1,10 +1,9 @@
-### update.md
+from bookshelf.models import Book
 
-```md
-# Update the created Book instance
-## Command:
-```python
-book = Book.objects.get(title="1984")
+#book instance
+book = Book.objects.get(pk=1)
 book.title = "Nineteen Eighty-Four"
 book.save()
-print(f"Updated Title: {book.title}")
+
+#expected output
+<Book: Nineteen Eighty-Four>

@@ -1,8 +1,7 @@
-### retrieve.md
+from bookshelf.models import Book
 
-```md
-# Retrieve the created Book instance
-## Command:
-```python
-book = Book.objects.get(title="1984")
-print(f"Title: {book.title}, Author: {book.author}, Publication Year: {book.publication_year}")
+#book instance
+book = Book.objects.get(pk=1)
+
+#expected output
+<Book: 1984>
