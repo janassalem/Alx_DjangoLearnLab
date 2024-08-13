@@ -25,3 +25,9 @@ urlpatterns = [
     path('librarian/', views.librarian_view, name='librarian_view'),
     path('admin/', views.admin_view, name='admin_view'),
 ]
+from django.urls import path
+from .views import admin_view
+
+urlpatterns = [
+    path('admin-dashboard/', admin_view, name='admin-dashboard'),
+]
