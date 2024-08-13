@@ -87,3 +87,10 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def admin_view(request):
     return render(request, 'admin_view.html')
+from django.http import HttpResponseForbidden
+from django.shortcuts import render
+
+def admin_view(request):
+    if not request.user.is_authenticated or request.user.role != 'admin':
+        return HttpResponseForbidden("You are not allowed to access this page.")
+    return render(request, 'relationship_app/admin_dashboard.html')
