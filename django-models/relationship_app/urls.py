@@ -31,3 +31,9 @@ from .views import admin_view
 urlpatterns = [
     path('admin-dashboard/', admin_view, name='admin-dashboard'),
 ]
+
+urlpatterns = [
+    path('book/add/', views.add_book_view, name='add_book'),
+    path('book/change/', views.change_book_view, name='change_book'),
+    path('book/delete/', views.delete_book_view, name='delete_book'),
+]

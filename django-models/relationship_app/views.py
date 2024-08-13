@@ -94,3 +94,19 @@ def admin_view(request):
     if not request.user.is_authenticated or request.user.role != 'admin':
         return HttpResponseForbidden("You are not allowed to access this page.")
     return render(request, 'relationship_app/admin_dashboard.html')
+from django.contrib.auth.decorators import permission_required
+
+@permission_required('relationship_app.can_add_book')
+def add_book_view(request):
+    # Code to add a book
+    pass
+
+@permission_required('relationship_app.can_change_book')
+def change_book_view(request):
+    # Code to change a book
+    pass
+
+@permission_required('relationship_app.can_delete_book')
+def delete_book_view(request):
+    # Code to delete a book
+    pass
