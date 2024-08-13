@@ -67,3 +67,8 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+from django.shortcuts import render
+
+def register(request):
+    return render(request, 'relationship_app/register.html')
