@@ -110,3 +110,56 @@ def change_book_view(request):
 def delete_book_view(request):
     # Code to delete a book
     pass
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Book  # Assuming you have a Book model
+from .forms import BookForm  # Assuming you have a form for Book
+
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('some_view')  # Replace 'some_view' with your redirect target
+    else:
+        form = BookForm()
+    return render(request, 'relationship_app/add_book.html', {'form': form})
+
+def edit_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('some_view')  # Replace 'some_view' with your redirect target
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'relationship_app/edit_book.html', {'form': form, 'book': book})
+
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Book  # Assuming you have a Book model
+from .forms import BookForm  # Assuming you have a form for Book
+
+@permission_required('relationship_app.add_book')
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('some_view')  # Replace 'some_view' with your redirect target
+    else:
+        form = BookForm()
+    return render(request, 'relationship_app/add_book.html', {'form': form})
+
+@permission_required('relationship_app.change_book')
+def edit_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('some_view')  # Replace 'some_view' with your redirect target
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'relationship_app/edit_book.html', {'form': form, 'book': book})

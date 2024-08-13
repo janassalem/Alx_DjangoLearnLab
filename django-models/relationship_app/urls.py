@@ -37,3 +37,12 @@ urlpatterns = [
     path('book/change/', views.change_book_view, name='change_book'),
     path('book/delete/', views.delete_book_view, name='delete_book'),
 ]
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('add_book/', views.add_book, name='add_book'),
+    path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),
+    # Other URL patterns
+]
