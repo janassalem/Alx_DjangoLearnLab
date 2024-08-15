@@ -182,3 +182,27 @@ class LibraryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['books'] = self.object.books.all()
         return context
+    from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseForbidden
+
+def role_required(role):
+    def decorator(view_func):
+        def _wrapped_view(request, *args, **kwargs):
+            if request.user.userprofile.role == role:
+                return view_func(request, *args, **kwargs)
+            return HttpResponseForbidden("You do not have access to this page.")
+        return _wrapped_view
+    return decorator
+
+@role_required('Admin')
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+@role_required('Librarian')
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@role_required('Member')
+def member_view(request):
+    return render(request, 'member_view.html')
