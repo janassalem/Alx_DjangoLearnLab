@@ -276,3 +276,28 @@ def librarian_view(request):
 @user_passes_test(member_check)
 def member_view(request):
     return HttpResponse("Welcome Member! You can view general content.")
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+from .models import UserProfile
+
+def user_is_admin(user):
+    return user.userprofile.role == 'Admin'
+
+def user_is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+def user_is_member(user):
+    return user.userprofile.role == 'Member'
+
+@user_passes_test(user_is_admin)
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+@user_passes_test(user_is_librarian)
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@user_passes_test(user_is_member)
+def member_view(request):
+    return render(request, 'member_view.html')
+
