@@ -92,3 +92,23 @@ def change_book_view(request):
 def delete_book_view(request):
     # Code to delete a book
     pass
+
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+
+def is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    # Your code for the librarian view
+    return render(request, 'librarian_template.html')
+
+def is_member(user):
+    return user.userprofile.role == 'Member'
+
+@user_passes_test(is_member)
+def member_view(request):
+    # Your code for the member view
+    return render(request, 'member_template.html')
+
