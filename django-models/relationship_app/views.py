@@ -124,3 +124,15 @@ def register_user(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'register.html', {'form': form})
+from django.shortcuts import render, redirect
+from your_app.forms import UserRegistrationForm
+
+def register_user(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect to a login page or wherever you want after registration
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'register.html', {'form': form})
