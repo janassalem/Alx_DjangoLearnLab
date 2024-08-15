@@ -301,3 +301,14 @@ def librarian_view(request):
 def member_view(request):
     return render(request, 'member_view.html')
 
+
+from django.contrib.auth.decorators import user_passes_test
+
+def user_is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+
+@user_passes_test(user_is_librarian)
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
