@@ -133,4 +133,4 @@ def librarian_view(request):
     return render(request, 'relationship_app/librarian.html')
 def book_list(request):
     form = BookForm()
-    return render(request, 'book_list.html', {'form': form})
+    return render(request, 'relationship_app/book_list.html', {'form': form})

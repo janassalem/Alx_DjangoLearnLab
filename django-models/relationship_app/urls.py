@@ -19,6 +19,9 @@ urlpatterns = [
 
 
 
+from django.urls import path
+from . import views
+
 urlpatterns = [
     path("list_books/", views.list_books, name="list-books"),
     path("library_detail/", views.LibraryDetailView.as_view(), name="library-detail"),
@@ -28,5 +31,7 @@ urlpatterns = [
     path("add_book/", views.add_book, name="add-book"),
     path("edit_book/<int:book_id>/", views.edit_book, name="edit-book"),
     path("delete_book/<int:book_id>/", views.delete_book, name="delete-book"),
+    path('librarian/', views.librarian_view, name='librarian-view'),  # Function-based view
+    path('librarian/', views.LibrarianView.as_view(), name='librarian-view'),  # Class-based view
 ]
 
