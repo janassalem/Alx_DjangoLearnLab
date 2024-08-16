@@ -152,7 +152,7 @@ def librarian_view(request):
 @user_passes_test(lambda user: check_role(user, "Member"))
 def member_view(request):
     return render(request, "relationship_app/member_view.html")
-<<<<<<< HEAD
+
 
 
 def is_admin(user):
@@ -175,5 +175,3 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'member_template.html')
-=======
->>>>>>> 011d79bfd636f1e16c9774636f46f60d0e5daa82
