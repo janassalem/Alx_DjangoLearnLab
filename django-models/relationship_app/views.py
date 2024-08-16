@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import ListView, DetailView
 from .models import Book, Library, UserProfile
 from .forms import BookForm
+from .models import Library
 
 # Book Views
 def list_books(request):
