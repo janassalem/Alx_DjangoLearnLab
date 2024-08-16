@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView
 from .models import Book, Library, UserProfile
 from .forms import BookForm
 from .models import Library
-
+from django.views.generic.detail import DetailView
 # Book Views
 def list_books(request):
     books = Book.objects.all()
