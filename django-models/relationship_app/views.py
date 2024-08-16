@@ -8,6 +8,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import permission_required
 from .forms import BookForm
+from django.shortcuts import render
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .forms import BookForm
+from .models import Book
  
 
 @permission_required("relationship_app.can_add_book")
@@ -72,6 +78,62 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     template_name = "logout.html"
+
+
+def check_role(user, role):
+  return user.is_authenticated and user.userprofile.role == role
+
+@user_passes_test(lambda user: check_role(user, "Admin"))
+def admin_view(request):
+    return render(request, "relationship_app/admin_view.html")
+
+@user_passes_test(lambda user: check_role(user, "Librarian"))
+def librarian_view(request):
+    return render(request, "relationship_app/librarian_view.html")
+
+@user_passes_test(lambda user: check_role(user, "Member"))
+def member_view(request):
+    return render(request, "relationship_app/member_view.html")
+# relationship_app/views.py
+from django.shortcuts import render
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from .models import UserProfile
+
+# Function-based view example
+@login_required
+def librarian_view(request):
+    if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'Librarian':
+        # Logic for Librarian view
+        return render(request, 'relationship_app/librarian_view.html')
+    else:
+        return HttpResponseForbidden("You are not authorized to view this page.")
+
+# Class-based view example
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+
+class LibrarianRequiredMixin(UserPassesTestMixin, LoginRequiredMixin):
+    def test_func(self):
+        return hasattr(self.request.user, 'userprofile') and self.request.user.userprofile.role == 'Librarian'
+
+class LibrarianView(LibrarianRequiredMixin, TemplateView):
+    template_name = 'relationship_app/librarian_view.html'
+
+ # relationship_app/views.py
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+
+def librarian_required(view_func):
+    return user_passes_test(lambda u: u.userprofile.role == 'Librarian')(view_func)
+
+@librarian_required
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian.html')
+def book_list(request):
+    form = BookForm()
+    return render(request, 'relationship_app/book_list.html', {'form': form})
 
 
 def check_role(user, role):
