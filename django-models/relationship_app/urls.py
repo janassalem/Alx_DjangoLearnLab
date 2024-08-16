@@ -6,6 +6,12 @@ from .views import librarian_view, LibrarianView
 from . import views
 from django.contrib import admin
 from django.urls import path, include
+
+from django.urls import path
+from .admin_view import admin_view
+from .librarian_view import librarian_view
+from .member_view import member_view
+
 urlpatterns = [
     path("list_books/", list_books, name="list-books"),
     path("library_detail/", LibraryDetailView.as_view(), name="library-detail"),
@@ -19,6 +25,9 @@ urlpatterns = [
     path('librarian/', LibrarianView.as_view(), name='librarian-view'),  # Class-based view
      path('admin/', admin.site.urls),
     path('', include('relationship_app.urls')),
+    path('admin/', admin_view, name='admin_view'),
+    path('librarian/', librarian_view, name='librarian_view'),
+    path('member/', member_view, name='member_view'),
 ]
 
 

@@ -6,4 +6,5 @@ def user_is_member(user):
 
 @user_passes_test(user_is_member)
 def member_view(request):
+    # Add logic for member content here
     return render(request, 'relationship_app/member_view.html')
