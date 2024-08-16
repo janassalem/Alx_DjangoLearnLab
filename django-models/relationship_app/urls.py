@@ -5,16 +5,16 @@ from .views import librarian_view, LibrarianView
 
 from . import views
 urlpatterns = [
-    path("list_books/", list_books, name="list-books"),
-    path("library_detail/", LibraryDetailView.as_view(), name="library-detail"),
-    path("register/", register, name="register"),
-    path("login/", LoginView.as_view(template_name="relationship_app/login.html"), name="login"),
-    path("logout/", LogoutView.as_view(template_name="relationship_app/logout.html"), name="logout"),
-    path("add_book/", add_book, name="add-book"),
-    path("edit_book/<int:book_id>/", edit_book, name="edit-book"),
-    path("delete_book/<int:book_id>/", delete_book, name="delete-book"),
-    path('librarian/', librarian_view, name='librarian-view'),  # Function-based view
-    path('librarian/', LibrarianView.as_view(), name='librarian-view'),  # Class-based view
+    path("relationship_app/list_books/", list_books, name="list-books"),
+    path("relationship_app/library_detail/", LibraryDetailView.as_view(), name="library-detail"),
+    path("relationship_app/register/", register, name="register"),
+    path("relationship_app/login/", LoginView.as_view(template_name="relationship_app/login.html"), name="login"),
+    path("relationship_app/logout/", LogoutView.as_view(template_name="relationship_app/logout.html"), name="logout"),
+    path("relationship_app/add_book/", add_book, name="add-book"),
+    path("relationship_app/edit_book/<int:book_id>/", edit_book, name="edit-book"),
+    path("relationship_app/delete_book/<int:book_id>/", delete_book, name="delete-book"),
+    path('relationship_app/librarian/', librarian_view, name='librarian-view'),  # Function-based view
+    path('relationship_app/librarian/', LibrarianView.as_view(), name='librarian-view'),  # Class-based view
 ]
 
 

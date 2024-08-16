@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from relationship_app.models import UserProfile
+from .models import Book 
+
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -17,3 +18,10 @@ class UserRegistrationForm(forms.ModelForm):
             user.save()
             UserProfile.objects.create(user=user, role=self.cleaned_data['role'])
         return user
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book  # Ensure that this line correctly references the Book model
+        fields = ['title', 'author', 'published_date']
+
+
+

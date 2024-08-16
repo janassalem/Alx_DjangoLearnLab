@@ -11,6 +11,9 @@ from .forms import BookForm
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .forms import BookForm
+from .models import Book
  
 
 @permission_required("relationship_app.can_add_book")
@@ -128,3 +131,6 @@ def librarian_required(view_func):
 @librarian_required
 def librarian_view(request):
     return render(request, 'relationship_app/librarian.html')
+def book_list(request):
+    form = BookForm()
+    return render(request, 'book_list.html', {'form': form})
