@@ -84,6 +84,7 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['title', 'author', 'published_date']  # Adjust fields as needed
+<<<<<<< HEAD
 
 
 class UserProfile(models.Model):
@@ -106,3 +107,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
+=======
+        
+>>>>>>> 011d79bfd636f1e16c9774636f46f60d0e5daa82
