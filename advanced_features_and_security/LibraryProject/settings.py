@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'relationship_app_name.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
 
 # Application definition
 
