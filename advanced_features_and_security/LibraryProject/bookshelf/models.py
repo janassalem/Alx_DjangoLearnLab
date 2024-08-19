@@ -43,3 +43,24 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+class YourModel(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view model"),
+            ("can_create", "Can create model"),
+            ("can_edit", "Can edit model"),
+            ("can_delete", "Can delete model"),
+        ]
+class CustomUser(AbstractUser):
+    date_of_birth = models.DateField(null=True, blank=True)
+    profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view the content"),
+            ("can_create", "Can create content"),
+            ("can_edit", "Can edit content"),
+            ("can_delete", "Can delete content"),
+        ]
