@@ -59,7 +59,7 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
         # Save the updated book instance
         serializer.save()
 
-    def perform_destroy(self, instance):
+    def perform_delete(self, instance):
         # Additional logic before deletion
         if instance.is_important:  # Example condition
             raise ValidationError('Important books cannot be deleted.')
