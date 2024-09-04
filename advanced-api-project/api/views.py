@@ -47,3 +47,22 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
         # Save the updated book instance with any modifications applied
         serializer.save()
 
+class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def perform_update(self, serializer):
+        # Additional logic during update
+        if not serializer.validated_data.get('title'):
+            raise ValidationError('Title cannot be empty.')
+        
+        # Save the updated book instance
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        # Additional logic before deletion
+        if instance.is_important:  # Example condition
+            raise ValidationError('Important books cannot be deleted.')
+        
+        # Perform the deletion
+        instance.delete()
