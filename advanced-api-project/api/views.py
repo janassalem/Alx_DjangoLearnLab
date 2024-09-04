@@ -46,11 +46,6 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         # Save the updated book instance with any modifications applied
         serializer.save()
-
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
     def perform_update(self, serializer):
         # Additional logic during update
         if not serializer.validated_data.get('title'):
@@ -66,3 +61,5 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
         
         # Perform the deletion
         instance.delete()
+
+
