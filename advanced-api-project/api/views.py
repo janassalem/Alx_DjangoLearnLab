@@ -1,21 +1,18 @@
-from django.shortcuts import render
 from rest_framework import generics
-from .models import Book
-from .seriealizers import BookSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .models import Book
+from .serializers import BookSerializer
 
-class BookListView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
 
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class BookListView(generics.ListCreateAPIView):
+# List all books or create a new book
+class BookListCreateView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    # Custom methods or overrides if needed
 
+# Retrieve, update, or delete a book by ID
+class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
