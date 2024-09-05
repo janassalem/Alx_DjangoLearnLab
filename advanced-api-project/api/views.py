@@ -4,11 +4,22 @@ from rest_framework.exceptions import ValidationError
 from .models import Book
 from .seriealizers import BookSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter
+
+
+ 
+    
 
 # List all books
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['title', 'author', 'publication_year']
+    search_fields = ['title', 'author']
+    ordering_fields = ['title', 'publication_year']
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 # Retrieve a book by ID
@@ -84,3 +95,16 @@ class BookDeleteView(generics.DestroyAPIView):
         
         # Perform the deletion
         instance.delete()
+
+class BookListView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'author', 'publication_year']
+
+    def perform_create(self, serializer):
+        if Book.objects.filter(title=serializer.validated_data['title']).exists():
+            raise ValidationError('A book with this title already exists.')
+        serializer.save()
+
+
