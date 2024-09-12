@@ -48,4 +48,32 @@ from .views import CommentCreateView
 urlpatterns = [
     # Other URL patterns...
     path('post/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='add-comment'),
+    
+]
+
+
+from django.urls import path
+from .views import (
+    PostListView, 
+    PostDetailView, 
+    PostCreateView, 
+    PostUpdateView, 
+    PostDeleteView,
+    CommentCreateView, 
+    CommentUpdateView, 
+    CommentDeleteView
+)
+
+urlpatterns = [
+    # Blog post CRUD URLs
+    path('', PostListView.as_view(), name='post-list'),
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    path('post/new/', PostCreateView.as_view(), name='post-create'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+
+    # Comment CRUD URLs
+    path('post/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='add-comment'),  # For creating a comment
+    path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),  # For updating a comment
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),  # For deleting a comment
 ]
