@@ -78,3 +78,11 @@ urlpatterns = [
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),  # For deleting a comment
     path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add-comment'),
 ]
+
+from .views import search_posts
+
+urlpatterns = [
+    # Other URLs...
+    path('search/', search_posts, name='search-posts'),
+    path('tags/<slug:tag_slug>/', PostListByTagView.as_view(), name='posts-by-tag'),
+]
