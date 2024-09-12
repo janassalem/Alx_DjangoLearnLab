@@ -35,3 +35,13 @@
         <p>You must <a href="{% url 'login' %}">login</a> to comment.</p>
     {% endif %}
 {% endblock %}
+{% if user.is_authenticated %}
+   <h3>Add a Comment</h3>
+   <form method="POST" action="{% url 'add-comment' post.id %}">
+       {% csrf_token %}
+       {{ form.as_p }}
+       <button type="submit">Post Comment</button>
+   </form>
+{% else %}
+   <p>You must <a href="{% url 'login' %}">login</a> to comment.</p>
+{% endif %}
