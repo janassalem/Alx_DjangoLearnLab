@@ -178,6 +178,7 @@ from .models import Post
 def search_posts(request):
     query = request.GET.get('q')  # Get the query from the search form
     posts = Post.objects.all()  # Start with all posts
+    Post.objects.filter
 
     if query:
         # Filter posts based on title, content, or tags
