@@ -86,3 +86,10 @@ urlpatterns = [
     path('search/', search_posts, name='search-posts'),
     path('tags/<slug:tag_slug>/', PostListByTagView.as_view(), name='posts-by-tag'),
 ]
+
+from .views import search_posts
+
+urlpatterns = [
+    # Other URL patterns...
+    path('search/', search_posts, name='search-posts'),
+]
