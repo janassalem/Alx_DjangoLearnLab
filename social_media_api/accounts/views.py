@@ -131,3 +131,43 @@ class UnfollowUserView(generics.GenericAPIView):
             return Response({"message": f"Successfully unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "You are not following this user."}, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import CustomUser
+
+# Follow User View
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        user_to_follow = get_object_or_404(CustomUser, pk=user_id)
+
+        if user_to_follow == request.user:
+            return Response({"error": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Add the user to the following list
+        request.user.following.add(user_to_follow)
+        return Response({"message": f"Successfully followed {user_to_follow.username}"}, status=status.HTTP_200_OK)
+
+# Unfollow User View
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        user_to_unfollow = get_object_or_404(CustomUser, pk=user_id)
+
+        if user_to_unfollow in request.user.following.all():
+            request.user.following.remove(user_to_unfollow)
+            return Response({"message": f"Successfully unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "You are not following this user."}, status=status.HTTP_400_BAD_REQUEST)
+
+# List All Users View
+class ListAllUsersView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        users = CustomUser.objects.all()  # Use CustomUser.objects.all() here
+        user_list = [{"id": user.id, "username": user.username} for user in users]
+        return Response(user_list, status=status.HTTP_200_OK)
