@@ -217,3 +217,58 @@ class UnlikePostView(generics.GenericAPIView):
             return Response({"message": "Post unliked."}, status=status.HTTP_200_OK)
         except Like.DoesNotExist:
             return Response({"message": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import Post, Like
+from notifications.models import Notification
+
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        # Ensure the post exists using get_object_or_404
+        post = get_object_or_404(Post, pk=pk)
+
+        # Create or get the like object
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if not created:
+            return Response({"message": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a notification for the post author
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb="liked your post",
+            target=post
+        )
+
+        return Response({"message": "Post liked."}, status=status.HTTP_200_OK)
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        # Ensure the post exists using get_object_or_404
+        post = get_object_or_404(Post, pk=pk)
+
+        try:
+            # Get the existing like
+            like = Like.objects.get(user=request.user, post=post)
+            like.delete()
+            return Response({"message": "Post unliked."}, status=status.HTTP_200_OK)
+        except Like.DoesNotExist:
+            return Response({"message": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk, *args, **kwargs):
+        # Ensure the post exists using get_object_or_404
+        post = get_object_or_404(Post, pk=pk)
+        serializer = self.get_serializer(post)
+        return Response(serializer.data)
+
+# Add any other views you need
