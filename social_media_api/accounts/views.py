@@ -63,3 +63,42 @@ def unfollow_user(request, user_id):
     user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
     request.user.following.remove(user_to_unfollow)
     return Response({"message": "Successfully unfollowed the user."}, status=status.HTTP_200_OK)
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import CustomUser
+from rest_framework import status
+
+# View to follow a user
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    try:
+        # Retrieve the user to be followed
+        user_to_follow = CustomUser.objects.get(pk=user_id)
+        
+        if user_to_follow == request.user:
+            return Response({"error": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Add the user to the current user's following list
+        request.user.following.add(user_to_follow)
+        return Response({"message": "Successfully followed the user."}, status=status.HTTP_200_OK)
+    except CustomUser.DoesNotExist:
+        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+# View to unfollow a user
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unfollow_user(request, user_id):
+    try:
+        # Retrieve the user to be unfollowed
+        user_to_unfollow = CustomUser.objects.get(pk=user_id)
+
+        # Remove the user from the current user's following list
+        request.user.following.remove(user_to_unfollow)
+        return Response({"message": "Successfully unfollowed the user."}, status=status.HTTP_200_OK)
+    except CustomUser.DoesNotExist:
+        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
