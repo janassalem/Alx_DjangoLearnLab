@@ -270,5 +270,6 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
         post = get_object_or_404(Post, pk=pk)
         serializer = self.get_serializer(post)
         return Response(serializer.data)
+        generics.get_object_or_404(Post, pk=pk)
 
 # Add any other views you need
